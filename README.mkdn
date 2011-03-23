@@ -3,7 +3,6 @@ WARNING: Here be dragons.
 WARNING: Might sometimes work. Possibly.
 
     group :test do
-      gem 'guard'
       gem 'guard-forku',
         git: 'https://github.com/dstrelau/guard-forku.git'
     end
