@@ -5,9 +5,10 @@ module Guard
   class Forku < Guard
 
     def start
+      UI.info "Loading test_helper"
       require 'test_helper'
       ActiveRecord::Base.connection.disconnect! if defined?(ActiveRecord::Base)
-      notify 'Ready to test. Code away.'
+      UI.info "Ready"
     end
 
     # Called on Ctrl-/ signal
@@ -17,6 +18,7 @@ module Guard
     def run_all
       %w[unit functional integration performance].each do |test|
         load_in_fork("test/#{test}/**/*_test.rb")
+        Process.wait
       end
     end
 
@@ -35,27 +37,14 @@ module Guard
         ActiveRecord::Base.establish_connection if defined?(ActiveRecord::Base)
         $0 = paths.join(' ') # test/unit uses this
         if paths.empty?
-          notify "No tests found", image: :pending
+          UI.info "No tests found. Skipping."
           exit! # skip test/unit autorun
         else
           paths.each {|p| load p }
         end
       end
-      if Process.wait > 0
-        notify "PASS"
-      else
-        notify "FAIL", image: :failed
-      end
     end
     private :load_in_fork
 
-
-    def notify(message, opts={})
-      if options[:notify]
-        Notifier.notify(message, opts)
-      else
-        UI.info("*** " << message)
-      end
-    end
   end
 end
