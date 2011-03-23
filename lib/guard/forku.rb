@@ -32,7 +32,7 @@ module Guard
       paths.collect! {|p|
         p = File.join(p,'**/*_test.rb') if File.directory?(p)
         Dir.glob(p)
-      }.flatten!
+      }.flatten!.uniq!
 
       pid = fork do
         ActiveRecord::Base.establish_connection if defined?(ActiveRecord::Base)
