@@ -35,6 +35,7 @@ module Guard
 
       fork do
         ActiveRecord::Base.establish_connection if defined?(ActiveRecord::Base)
+        $0 = paths.join(' ') # test/unit uses this
         if paths.empty?
           UI.info "No tests found. Skipping."
           exit! # skip test/unit autorun
