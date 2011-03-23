@@ -17,7 +17,7 @@ module Guard
     # problems with overlapping DB connections and other wonkiness.
     def run_all
       %w[unit functional integration performance].each do |test|
-        load_in_fork(*Dir.glob("test/#{test}/**/*_test.rb"))
+        load_in_fork("test/#{test}/**/*_test.rb")
         Process.wait
       end
     end
@@ -28,6 +28,11 @@ module Guard
     end
 
     def load_in_fork(*paths)
+      paths.collect! {|p|
+        p = File.join(p,'**/*_test.rb') if File.directory?(p)
+        Dir.glob(p)
+      }.flatten!
+
       fork do
         ActiveRecord::Base.establish_connection if defined?(ActiveRecord::Base)
         paths.each {|p| load p }
