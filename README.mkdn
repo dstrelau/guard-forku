@@ -1,0 +1,13 @@
+WARNING: Here be dragons.
+
+WARNING: Might sometimes work. Possibly.
+
+    group :test do
+      gem 'guard'
+      gem 'guard-forku',
+        git: 'https://github.com/dstrelau/guard-forku.git'
+    end
+
+    $ bundle
+    $ bundle exec guard init forku
+    $ RUBYOPT=-Itest bundle exec guard
