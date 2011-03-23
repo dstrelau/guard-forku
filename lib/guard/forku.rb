@@ -19,7 +19,6 @@ module Guard
     def run_all
       %w[unit functional integration performance].each do |test|
         load_in_fork("test/#{test}/**/*_test.rb")
-        Process.wait
       end
     end
 
