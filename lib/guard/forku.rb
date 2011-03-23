@@ -12,6 +12,18 @@ module Guard
       notify 'Ready', image: :pending
     end
 
+    # Called on Ctrl-Z signal
+    #
+    # We can't reload all of Rails,
+    # but we can mimic what 'reload!' in console does.
+    def reload
+      if defined?(ActionDispatch::Reloader) # rails/rails@e683ab
+      elsif defined?(ActionDispatch::Callbacks) # Rails 3.0.x
+        ActionDispatch::Callbacks.new(Proc.new {}, false).call({})
+      end
+      UI.info "Reloaded."
+    end
+
     # Called on Ctrl-/ signal
     #
     # Run each set of tests serially, as running them together can cause
