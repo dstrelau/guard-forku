@@ -35,7 +35,12 @@ module Guard
 
       fork do
         ActiveRecord::Base.establish_connection if defined?(ActiveRecord::Base)
-        paths.each {|p| load p }
+        if paths.empty?
+          UI.info "No tests found. Skipping."
+          exit! # skip test/unit autorun
+        else
+          paths.each {|p| load p }
+        end
       end
     end
     private :load_in_fork
