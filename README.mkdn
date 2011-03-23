@@ -2,11 +2,22 @@ WARNING: Here be dragons.
 
 WARNING: Might sometimes work. Possibly.
 
+You need to turn off class caching in environments/test.rb:
+
+    config.cache_classes = false
+
+Gemfile:
+
     group :test do
       gem 'guard-forku',
         git: 'https://github.com/dstrelau/guard-forku.git'
     end
 
+Once to generate a Guardfile:
+
     $ bundle
     $ bundle exec guard init forku
+
+Start:
+
     $ RUBYOPT=-Itest bundle exec guard
